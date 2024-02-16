@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #d99748;
+            background-color: #1f1f1f;
+        }
+
+        h2 {
+            color: #732626;
+        }
+
+        .login-form {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            color: #d99748;
+            margin-bottom: 5px;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="submit"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #d99748;
+            background-color: transparent;
+            color: #fff;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: #d99748;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #4d1616;
+        }
+    </style>
+    <script>
+        
+        function capturePhoto() {
+            const video = document.getElementById('webcam');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Configuración de getUserMedia para acceder a la cámara web
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Captura la imagen del video y la muestra en el canvas
+                    setTimeout(() => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        // Convierte el canvas a una imagen y la envía al servidor
+                        const dataURL = canvas.toDataURL('image/png');
+                        const blob = dataURItoBlob(dataURL);
+
+                        const formData = new FormData();
+                        formData.append('image', blob, 'foto.png');
+
+                        // Envía el formulario con la imagen al servidor
+                        fetch('/foto', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            // Redirige a la página principal
+                            window.location.href = '/';
+                        })
+                        .catch(error => {
+                            console.error('Error al enviar la foto:', error);
+                        });
+                    }, 1000);  // Espera 1 segundo para asegurarse de que la cámara se haya iniciado correctamente
+                })
+                .catch(error => {
+                    console.error('Error al acceder a la cámara web:', error);
+                });
+        }
+
+        // Función para convertir data URI a Blob
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const uint8Array = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                uint8Array[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([arrayBuffer], { type: 'image/png' });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Hazte tu foto</h2>
+        <form class="foto-form" action="/foto" method="POST">
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" required><br>
+            <h3>Haz tu foto</h3>
+            <video id="webcam" style="display: none;"></video>
+            <input type="button" value="Capture Photo" onclick="capturePhoto()"><br>
+            <input type="submit" value="Iniciar Sesión">
+        </form>
+    </div>
+</body>
+</html>

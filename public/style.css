@@ -1,0 +1,87 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ff0000;
+}
+
+a {
+    color: #ff0000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos específicos para el formulario de registro */
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    color: #ff0000;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ff0000;
+    background-color: #000;
+    color: #fff;
+}
+
+input[type="submit"] {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #8b0000;
+}
+
+/* Estilos específicos para la página de inicio de sesión */
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    color: #ff0000;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ff0000;
+    background-color: #000;
+    color: #fff;
+}
+
+input[type="submit"] {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #8b0000;
+}

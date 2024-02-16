@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #d99748;
+            background-color: #1f1f1f;
+        }
+
+        h2 {
+            color: #732626;
+        }
+
+        .register-form {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .register-form label {
+            display: block;
+            color: #d99748;
+            margin-bottom: 5px;
+        }
+
+        .register-form input[type="text"],
+        .register-form input[type="email"],
+        .register-form input[type="tel"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #d99748;
+            background-color: transparent;
+            color: #fff;
+        }
+
+        .register-form input[type="submit"] {
+            background-color: #d99748;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            font-size: 23px;
+            margin: 10px auto 0 auto;
+            display: block;
+        }
+
+        .register-form input[type="submit"]:hover {
+            background-color: #4d1616;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro</h2>
+        <form class="register-form" action="/register" method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" name="apellidos" required><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" pattern="[0-9]+" required><br>
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" required><br>
+            <input type="submit" value="Registrarse">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webcam Capture</title>
+    <script>
+        function capturePhoto() {
+            const video = document.getElementById('webcam');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Configuración de getUserMedia para acceder a la cámara web
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Captura la imagen del video y la muestra en el canvas
+                    setTimeout(() => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        // Convierte el canvas a una imagen y la envía al servidor
+                        const dataURL = canvas.toDataURL('image/png');
+                        const blob = dataURItoBlob(dataURL);
+
+                        const formData = new FormData();
+                        formData.append('image', blob, 'foto.png');
+
+                        // Envía el formulario con la imagen al servidor
+                        fetch('/foto', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            // Redirige a la página principal
+                            window.location.href = '/';
+                        })
+                        .catch(error => {
+                            console.error('Error al enviar la foto:', error);
+                        });
+                    }, 1000);  // Espera 1 segundo para asegurarse de que la cámara se haya iniciado correctamente
+                })
+                .catch(error => {
+                    console.error('Error al acceder a la cámara web:', error);
+                });
+        }
+
+        // Función para convertir data URI a Blob
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const uint8Array = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                uint8Array[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([arrayBuffer], { type: 'image/png' });
+        }
+    </script>
+</head>
+<body>
+    <h1>Webcam Capture</h1>
+    <video id="webcam" style="display: none;"></video>
+    <!-- Agrega un botón para capturar la foto -->
+    <input type="button" value="Capture Photo" onclick="capturePhoto()">
+    <br> <br> <br>
+    <!-- Muestra la última foto si está disponible -->
+    <% if (ultimaFoto) { %>
+        <img src="/foto" alt="Última Foto">
+    <% } else { %>
+        <p>No hay fotos disponibles.</p>
+    <% } %>
+
+
+</body>
+</html>
